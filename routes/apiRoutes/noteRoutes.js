@@ -1,11 +1,14 @@
 const router = require('express').Router();
-const { createNewNote, validateNote } = require('../../lib/notes');
-const { notes } = require('../../data/db.json');
+const { createNewNote, validateNote, findById } = require('../../lib/notes');
+const notes  = require('../../data/db.json');
+const generateUniqueId = require('generate-unique-id');
+const fs = require('fs');
+const path = require('path');
 
-router.get('/api/notes', (req, res) => {
-  res.send('hello');
-  res.json( {notes} );
+router.get('/notes', (req, res) => {
+  res.json(notes);
 });
+
 
 router.get('/notes/:id', (req, res) => {
   const result = findById(req.params.id, notes);
@@ -17,15 +20,42 @@ router.get('/notes/:id', (req, res) => {
 });
 
 router.post('/notes', (req, res) => {
-    // set id based on what the next index of the array will be
-    req.body.id = notes.length.toString();
+  req.body.id = generateUniqueId();
+  console.log(req.body);
   
     if (!validateNote(req.body)) {
       res.status(400).send('The note is not properly formatted.');
     } else {
+    console.log(notes);
       const note = createNewNote(req.body, notes);
       res.json(note);
     }
+  });
+
+  router.delete('/notes/:id', (req,res) => {
+
+
+    const newArray = notes.filter((note) =>{
+     
+      if(req.params.id === note.id){
+        return false;
+      } else {
+        return true
+      }
+
+      
+
+
+
+    });
+    console.log(newArray);
+
+    fs.writeFileSync(
+      path.join(__dirname, '../../data/db.json'),
+      JSON.stringify(newArray)
+
+  );
+    res.json(newArray);
   });
 
   module.exports = router;

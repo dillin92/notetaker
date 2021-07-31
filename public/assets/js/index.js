@@ -1,10 +1,8 @@
 let noteTitle;
-let noteText ;
+let noteText;
 let saveNoteBtn;
 let newNoteBtn;
-let noteList ;
-
-
+let noteList;
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -33,7 +31,6 @@ const getNotes = () =>
     headers: {
       'Content-Type': 'application/json',
     },
-    
   });
 
 const saveNote = (note) =>
@@ -105,7 +102,7 @@ const handleNoteView = (e) => {
   renderActiveNote();
 };
 
-// Sets the activeNote to an empty object and allows the user to enter a new note
+// Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
   activeNote = {};
   renderActiveNote();
@@ -117,11 +114,13 @@ const handleRenderSaveBtn = () => {
   } else {
     show(saveNoteBtn);
   }
-}
+};
 
 // Render the list of note titles
 const renderNoteList = async (notes) => {
-  let jsonNotes = await notes.json()
+
+  let jsonNotes = await notes.json();
+  console.log(jsonNotes);
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
@@ -184,4 +183,3 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
-
