@@ -1,5 +1,7 @@
 {
   "homepage" : "https://dillin92.github.io/notetaker/",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d build",
   "name": "note-taker",
   "version": "1.0.0",
   "description": "",
